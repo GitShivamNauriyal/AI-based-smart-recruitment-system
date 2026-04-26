@@ -7,3 +7,4 @@
 /frontend/.env.local
 /ai-service/venv
 /ai-service/.env
+/backend/uploads/
