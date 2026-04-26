@@ -1,10 +1,10 @@
 import axios from "axios"
 
 const api = axios.create({
-    baseURL: "http://localhost:5000/api", // We will set your Node backend to run on port 5000
+    baseURL: "http://localhost:5000/api",
 })
 
-// Automatically attach JWT token to headers if it exists
+// Attach token to every request
 api.interceptors.request.use((config) => {
     const token = localStorage.getItem("token")
     if (token) {
@@ -12,5 +12,20 @@ api.interceptors.request.use((config) => {
     }
     return config
 })
+
+// Force instant logout if session expires or token is invalid
+api.interceptors.response.use(
+    (response) => response,
+    (error) => {
+        if (
+            error.response &&
+            (error.response.status === 401 || error.response.status === 403)
+        ) {
+            localStorage.removeItem("token")
+            window.location.href = "/" // Instantly kicks user to login page without needing a reload
+        }
+        return Promise.reject(error)
+    },
+)
 
 export default api

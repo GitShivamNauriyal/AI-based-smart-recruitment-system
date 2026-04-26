@@ -8,126 +8,109 @@ export default function Register() {
         name: "",
         email: "",
         password: "",
-        role: "candidate", // Default role
+        role: "candidate",
     })
     const [error, setError] = useState("")
 
     const handleRegister = async (e) => {
         e.preventDefault()
         try {
-            // Hit the Node.js registration endpoint
             await api.post("/auth/register", formData)
             alert("Account created successfully! Please log in.")
-            navigate("/") // Redirect to login page
+            navigate("/")
         } catch (err) {
-            setError(err.response?.data?.error || "Registration failed.")
+            const errData = err.response?.data
+            setError(
+                errData?.errors
+                    ? errData.errors[0].msg
+                    : errData?.error || "Server error.",
+            )
         }
     }
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-100">
-            <div className="p-8 bg-white rounded shadow-md w-96">
-                <h2 className="mb-6 text-2xl font-bold text-center text-gray-800">
-                    Create Account
+        <div className="flex items-center justify-center min-h-screen">
+            <div className="glass-panel p-10 w-[28rem] relative overflow-hidden shadow-2xl">
+                {/* Decorative floating blur */}
+                <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-cyan-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
+
+                <h2 className="mb-8 text-4xl font-black text-center text-slate-800 tracking-tight">
+                    Create <span className="text-cyan-600">Identity</span>
                 </h2>
 
                 {error && (
-                    <div className="p-2 mb-4 text-sm text-red-700 bg-red-100 rounded">
+                    <div className="p-3 mb-6 text-sm font-bold text-red-600 bg-red-100/50 border border-red-200 rounded-xl">
                         {error}
                     </div>
                 )}
 
-                <form onSubmit={handleRegister}>
-                    <div className="mb-4">
-                        <label className="block mb-2 text-sm font-bold text-gray-700">
-                            Full Name
-                        </label>
-                        <input
-                            type="text"
-                            required
-                            className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-blue-500"
-                            value={formData.name}
-                            onChange={(e) =>
-                                setFormData({
-                                    ...formData,
-                                    name: e.target.value,
-                                })
-                            }
-                        />
-                    </div>
+                <form
+                    onSubmit={handleRegister}
+                    className="space-y-5 relative z-10"
+                >
+                    <input
+                        type="text"
+                        required
+                        placeholder="Full Name"
+                        className="w-full px-5 py-3 bg-white/50 border border-white/40 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:bg-white transition-all text-slate-700 font-medium"
+                        value={formData.name}
+                        onChange={(e) =>
+                            setFormData({ ...formData, name: e.target.value })
+                        }
+                    />
 
-                    <div className="mb-4">
-                        <label className="block mb-2 text-sm font-bold text-gray-700">
-                            Email
-                        </label>
-                        <input
-                            type="email"
-                            required
-                            className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-blue-500"
-                            value={formData.email}
-                            onChange={(e) =>
-                                setFormData({
-                                    ...formData,
-                                    email: e.target.value,
-                                })
-                            }
-                        />
-                    </div>
+                    <input
+                        type="email"
+                        required
+                        placeholder="Email Address"
+                        className="w-full px-5 py-3 bg-white/50 border border-white/40 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:bg-white transition-all text-slate-700 font-medium"
+                        value={formData.email}
+                        onChange={(e) =>
+                            setFormData({ ...formData, email: e.target.value })
+                        }
+                    />
 
-                    <div className="mb-4">
-                        <label className="block mb-2 text-sm font-bold text-gray-700">
-                            Password
-                        </label>
-                        <input
-                            type="password"
-                            required
-                            minLength="6"
-                            className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-blue-500"
-                            value={formData.password}
-                            onChange={(e) =>
-                                setFormData({
-                                    ...formData,
-                                    password: e.target.value,
-                                })
-                            }
-                        />
-                    </div>
+                    <input
+                        type="password"
+                        required
+                        placeholder="Security Key (Min 6 chars)"
+                        className="w-full px-5 py-3 bg-white/50 border border-white/40 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:bg-white transition-all text-slate-700 font-medium"
+                        value={formData.password}
+                        onChange={(e) =>
+                            setFormData({
+                                ...formData,
+                                password: e.target.value,
+                            })
+                        }
+                    />
 
-                    <div className="mb-6">
-                        <label className="block mb-2 text-sm font-bold text-gray-700">
-                            I am a...
-                        </label>
-                        <select
-                            className="w-full px-3 py-2 border rounded focus:ring-2 focus:ring-blue-500"
-                            value={formData.role}
-                            onChange={(e) =>
-                                setFormData({
-                                    ...formData,
-                                    role: e.target.value,
-                                })
-                            }
-                        >
-                            <option value="candidate">
-                                Job Seeker (Candidate)
-                            </option>
-                            <option value="recruiter">
-                                Hiring Manager (Recruiter)
-                            </option>
-                        </select>
-                    </div>
+                    <select
+                        className="w-full px-5 py-3 bg-white/50 border border-white/40 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:bg-white transition-all text-slate-700 font-medium appearance-none"
+                        value={formData.role}
+                        onChange={(e) =>
+                            setFormData({ ...formData, role: e.target.value })
+                        }
+                    >
+                        <option value="candidate">
+                            Job Seeker (Candidate)
+                        </option>
+                        <option value="recruiter">
+                            Hiring Manager (Recruiter)
+                        </option>
+                    </select>
 
                     <button
                         type="submit"
-                        className="w-full px-4 py-2 font-bold text-white bg-green-600 rounded hover:bg-green-700"
+                        className="w-full mt-2 px-5 py-3 font-bold text-white bg-cyan-600 rounded-xl shadow-xl shadow-cyan-200 hover:bg-cyan-700 hover:-translate-y-0.5 transition-all"
                     >
-                        Register
+                        Register Entity
                     </button>
                 </form>
 
-                <p className="mt-4 text-sm text-center text-gray-600">
-                    Already have an account?{" "}
-                    <Link to="/" className="text-blue-600 hover:underline">
-                        Log in
+                <p className="mt-6 text-sm text-center text-slate-500 font-medium relative z-10">
+                    Already in the system?{" "}
+                    <Link to="/" className="text-cyan-600 hover:text-cyan-800">
+                        Initialize Login
                     </Link>
                 </p>
             </div>

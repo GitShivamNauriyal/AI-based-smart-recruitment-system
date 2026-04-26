@@ -1,9 +1,14 @@
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const pool = require("../config/db")
+const { validationResult } = require("express-validator")
 
 // Register a new user
-exports.register = async (req, res) => {
+exports.register = async (req, res, next) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() })
+    }
     const { name, email, password, role } = req.body
 
     try {
@@ -32,12 +37,16 @@ exports.register = async (req, res) => {
         })
     } catch (error) {
         console.error(error)
-        res.status(500).json({ error: "Server error" })
+        next(error) // Pass error to global error handler
     }
 }
 
 // Login existing user
-exports.login = async (req, res) => {
+exports.login = async (req, res, next) => {
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() })
+    }
     const { email, password } = req.body
 
     try {
@@ -73,6 +82,17 @@ exports.login = async (req, res) => {
         res.json({ token, role: user.role, name: user.name })
     } catch (error) {
         console.error(error)
-        res.status(500).json({ error: "Server error" })
+        next(error) // Pass error to global error handler
+    }
+}
+
+exports.getAllJobs = async (req, res, next) => {
+    try {
+        const result = await pool.query(
+            "SELECT * FROM job_postings WHERE status = 'open' ORDER BY created_at DESC",
+        )
+        res.json(result.rows)
+    } catch (err) {
+        next(err)
     }
 }

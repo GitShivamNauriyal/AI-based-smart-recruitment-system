@@ -12,63 +12,64 @@ export default function Login() {
     const handleLogin = async (e) => {
         e.preventDefault()
         try {
-            // Assuming your Node backend has an /auth/login route
             const response = await api.post("/auth/login", { email, password })
             login(response.data.token)
-
-            // Route based on RBAC
-            const role = response.data.role
-            if (role === "recruiter") navigate("/dashboard")
+            if (response.data.role === "recruiter") navigate("/dashboard")
             else navigate("/portal")
         } catch (error) {
-            alert("Login failed. Check credentials.")
+            const errData = error.response?.data
+            alert(
+                errData?.errors
+                    ? errData.errors[0].msg
+                    : errData?.error || "Login failed.",
+            )
         }
     }
 
     return (
-        <div className="flex items-center justify-center min-h-screen bg-gray-100">
-            <div className="p-8 bg-white rounded shadow-md w-96">
-                <h2 className="mb-6 text-2xl font-bold text-center text-gray-800">
-                    AI Recruitment Login
+        <div className="flex items-center justify-center min-h-screen">
+            <div className="glass-panel p-10 w-[26rem] relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-400 rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-blob"></div>
+                <h2 className="mb-8 text-4xl font-black text-center text-slate-800 tracking-tight">
+                    Access <span className="text-indigo-600">Portal</span>
                 </h2>
-                <form onSubmit={handleLogin}>
-                    <div className="mb-4">
-                        <label className="block mb-2 text-sm font-bold text-gray-700">
-                            Email
-                        </label>
+                <form
+                    onSubmit={handleLogin}
+                    className="space-y-6 relative z-10"
+                >
+                    <div>
                         <input
                             type="email"
-                            className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required
+                            placeholder="Enter transmission email"
+                            className="w-full px-5 py-3 bg-white/50 border border-white/40 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            required
                         />
                     </div>
-                    <div className="mb-6">
-                        <label className="block mb-2 text-sm font-bold text-gray-700">
-                            Password
-                        </label>
+                    <div>
                         <input
                             type="password"
-                            className="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            required
+                            placeholder="Security key"
+                            className="w-full px-5 py-3 bg-white/50 border border-white/40 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            required
                         />
                     </div>
                     <button
                         type="submit"
-                        className="w-full px-4 py-2 font-bold text-white bg-blue-600 rounded hover:bg-blue-700"
+                        className="w-full px-5 py-3 font-bold text-white bg-indigo-600 rounded-2xl shadow-xl shadow-indigo-200 hover:bg-indigo-700 hover:scale-[1.02] transition-all"
                     >
-                        Sign In
+                        Initialize Session
                     </button>
-                    <p className="mt-4 text-sm text-center text-gray-600">
-                        Don't have an account?{" "}
+                    <p className="text-sm text-center text-slate-500 font-medium">
+                        Unregistered entity?{" "}
                         <Link
                             to="/register"
-                            className="text-blue-600 hover:underline"
+                            className="text-indigo-600 hover:text-indigo-800"
                         >
-                            Register here
+                            Establish connection
                         </Link>
                     </p>
                 </form>

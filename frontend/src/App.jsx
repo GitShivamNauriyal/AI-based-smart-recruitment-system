@@ -15,6 +15,7 @@ import CandidatePortal from "./pages/CandidatePortal"
 import RecruiterDashboard from "./pages/RecruiterDashboard"
 import JobPostForm from "./pages/JobPostForm"
 import ShortlistView from "./pages/ShortlistView"
+import MyApplications from "./pages/MyApplications"
 
 const ProtectedRoute = ({ children, allowedRole }) => {
     const { user } = useContext(AuthContext)
@@ -65,6 +66,14 @@ export default function App() {
                             element={
                                 <ProtectedRoute allowedRole="recruiter">
                                     <ShortlistView />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/my-applications"
+                            element={
+                                <ProtectedRoute allowedRole="candidate">
+                                    <MyApplications />
                                 </ProtectedRoute>
                             }
                         />

@@ -1,62 +1,69 @@
 import { useContext } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate, useLocation } from "react-router-dom"
 import { AuthContext } from "../context/AuthContext"
 
 export default function Navbar() {
     const { user, logout } = useContext(AuthContext)
     const navigate = useNavigate()
+    const location = useLocation()
+
+    // Hide Navbar completely on Auth screens
+    if (location.pathname === "/" || location.pathname === "/register")
+        return null
 
     const handleLogout = () => {
         logout()
         navigate("/")
     }
 
-    if (!user) return null // Don't show navbar on login screen
-
     return (
-        <nav className="p-4 text-white bg-blue-900 shadow-md">
-            <div className="flex items-center justify-between max-w-6xl mx-auto">
-                <div className="text-xl font-bold tracking-wider">
-                    SmartRecruit AI
+        <div className="pt-6 pb-2">
+            <nav className="max-w-5xl mx-auto glass-panel px-8 py-4 flex items-center justify-between">
+                <div className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-cyan-500 tracking-tighter">
+                    SmartRecruit
+                    <span className="font-light text-indigo-900">AI</span>
                 </div>
 
-                <div className="flex items-center space-x-6">
-                    {user.role === "candidate" ? (
+                <div className="flex items-center space-x-8 font-medium text-slate-600">
+                    {user?.role === "candidate" ? (
                         <>
-                            <Link to="/portal" className="hover:text-blue-300">
-                                Browse Jobs
+                            <Link
+                                to="/portal"
+                                className="hover:text-indigo-600 transition-colors"
+                            >
+                                Job Board
                             </Link>
                             <Link
                                 to="/my-applications"
-                                className="hover:text-blue-300"
+                                className="hover:text-indigo-600 transition-colors"
                             >
-                                My Applications
+                                My Pipeline
                             </Link>
                         </>
                     ) : (
                         <>
                             <Link
                                 to="/dashboard"
-                                className="hover:text-blue-300"
+                                className="hover:text-indigo-600 transition-colors"
                             >
-                                My Jobs
+                                Command Center
                             </Link>
                             <Link
                                 to="/post-job"
-                                className="px-4 py-2 font-bold text-blue-900 bg-white rounded hover:bg-gray-200"
+                                className="px-5 py-2 text-white bg-indigo-600 rounded-full shadow-lg shadow-indigo-200 hover:bg-indigo-700 hover:-translate-y-0.5 transition-all"
                             >
-                                Post a Job
+                                Deploy Job
                             </Link>
                         </>
                     )}
                     <button
                         onClick={handleLogout}
-                        className="text-sm font-semibold text-red-300 hover:text-red-100"
+                        className="px-4 py-2 text-sm text-slate-500 bg-white/50 rounded-full hover:bg-red-50 hover:text-red-600 transition-colors"
                     >
-                        Logout ({user.name || user.email})
+                        Sign Out
                     </button>
                 </div>
-            </div>
-        </nav>
+            </nav>
+        </div>
     )
 }
