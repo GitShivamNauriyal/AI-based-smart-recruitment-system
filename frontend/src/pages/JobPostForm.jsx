@@ -136,7 +136,7 @@ export default function JobPostForm() {
                                         type="text"
                                         required
                                         placeholder="Skill (e.g. Python)"
-                                        className="flex-grow px-4 py-2.5 bg-white border border-indigo-500/40 rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500 text-sm font-medium shadow-sm"
+                                        className="grow px-4 py-2.5 bg-white border border-indigo-500/40 rounded-lg focus:outline-none focus:ring-1 focus:ring-indigo-500 text-sm font-medium shadow-sm"
                                         value={skill.skillName}
                                         onChange={(e) =>
                                             handleSkillChange(
@@ -192,7 +192,7 @@ export default function JobPostForm() {
 
                 <button
                     type="submit"
-                    className="w-full relative z-10 px-6 py-4 font-bold text-white bg-gradient-to-r from-indigo-600 to-cyan-500 rounded-xl shadow-lg hover:shadow-indigo-500/30 hover:-translate-y-0.5 transition-all text-lg tracking-wide"
+                    className="w-full relative z-10 px-6 py-4 font-bold text-white bg-linear-to-r from-indigo-600 to-cyan-500 rounded-xl shadow-lg hover:shadow-indigo-500/30 hover:-translate-y-0.5 transition-all text-lg tracking-wide"
                 >
                     Initialize Job Deployment
                 </button>

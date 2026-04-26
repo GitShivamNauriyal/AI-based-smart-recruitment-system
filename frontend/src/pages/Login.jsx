@@ -28,7 +28,7 @@ export default function Login() {
 
     return (
         <div className="flex items-center justify-center min-h-screen">
-            <div className="glass-panel p-10 w-[26rem] relative overflow-hidden">
+            <div className="glass-panel p-10 w-104 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-400 rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-blob"></div>
                 <h2 className="mb-8 text-4xl font-black text-center text-slate-800 tracking-tight">
                     Access <span className="text-indigo-600">Portal</span>
@@ -42,7 +42,7 @@ export default function Login() {
                             type="email"
                             required
                             placeholder="Enter transmission email"
-                            className="w-full px-5 py-3 bg-white/50 border border-white/40 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all"
+                            className="w-full px-5 py-3 bg-white/50 border border-white/40 rounded-2xl focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:bg-white transition-all"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                         />
@@ -52,7 +52,7 @@ export default function Login() {
                             type="password"
                             required
                             placeholder="Security key"
-                            className="w-full px-5 py-3 bg-white/50 border border-white/40 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all"
+                            className="w-full px-5 py-3 bg-white/50 border border-white/40 rounded-2xl focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:bg-white transition-all"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />

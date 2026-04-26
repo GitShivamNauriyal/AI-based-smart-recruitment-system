@@ -70,6 +70,64 @@ exports.getShortlist = async (req, res, next) => {
     }
 }
 
+const path = require("path")
+
+exports.deleteJob = async (req, res, next) => {
+    const { jobId } = req.params
+    try {
+        // 1. Verify the job exists AND belongs to this specific recruiter
+        const jobCheck = await pool.query(
+            "SELECT * FROM job_postings WHERE job_id = $1 AND recruiter_id = $2",
+            [jobId, req.user.userId],
+        )
+
+        if (jobCheck.rows.length === 0) {
+            return res
+                .status(404)
+                .json({ error: "Job not found or unauthorized to delete." })
+        }
+
+        // 2. BULLETPROOF FIX: Manually delete all applications tied to this job first.
+        // This prevents the PostgreSQL "Foreign Key Constraint" crash!
+        await pool.query("DELETE FROM applications WHERE job_id = $1", [jobId])
+
+        // 3. Now that it is empty, it is safe to delete the actual job posting.
+        await pool.query("DELETE FROM job_postings WHERE job_id = $1", [jobId])
+
+        res.json({
+            message:
+                "Job and all associated applications deleted successfully.",
+        })
+    } catch (err) {
+        console.error("Delete Job Error:", err)
+        next(err)
+    }
+}
+
+exports.downloadResume = async (req, res, next) => {
+    const { appId } = req.params
+    try {
+        const result = await pool.query(
+            "SELECT a.resume_path, u.name FROM applications a JOIN users u ON a.candidate_id = u.user_id WHERE a.app_id = $1",
+            [appId],
+        )
+
+        if (result.rows.length === 0)
+            return res.status(404).json({ error: "Application not found" })
+
+        const { resume_path, name } = result.rows[0]
+        const absolutePath = path.resolve(resume_path)
+
+        // Format the candidate's name to remove spaces (e.g., "John_Doe_Resume.pdf")
+        const safeFileName = `${name.replace(/\s+/g, "_")}_Resume.pdf`
+
+        // res.download automatically forces the browser to download the file instead of opening it!
+        res.download(absolutePath, safeFileName)
+    } catch (err) {
+        next(err)
+    }
+}
+
 // --- CANDIDATE FUNCTIONS ---
 
 exports.getAllJobs = async (req, res, next) => {

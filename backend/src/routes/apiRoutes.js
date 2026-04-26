@@ -78,6 +78,20 @@ router.get(
     apiController.getShortlist,
 )
 
+router.delete(
+    "/jobs/:jobId",
+    authenticate,
+    authorize("recruiter"),
+    apiController.deleteJob,
+)
+
+router.get(
+    "/applications/:appId/resume",
+    authenticate,
+    authorize("recruiter"),
+    apiController.downloadResume,
+)
+
 // Candidate Routes
 router.get(
     "/jobs",

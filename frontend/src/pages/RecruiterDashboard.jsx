@@ -6,6 +6,22 @@ export default function RecruiterDashboard() {
     const [jobs, setJobs] = useState([])
     const [loading, setLoading] = useState(true)
 
+    const handleDelete = async (jobId) => {
+        const confirmed = window.confirm(
+            "WARNING: Are you sure you want to delete this job? All candidate applications tied to this job will be permanently destroyed.",
+        )
+        if (!confirmed) return
+
+        try {
+            await api.delete(`/jobs/${jobId}`)
+            // Remove the deleted job from the screen instantly
+            setJobs(jobs.filter((job) => job.job_id !== jobId))
+        } catch (error) {
+            console.error("Failed to delete job", error)
+            alert("Failed to delete the job posting.")
+        }
+    }
+
     useEffect(() => {
         const fetchJobs = async () => {
             try {
@@ -81,12 +97,21 @@ export default function RecruiterDashboard() {
                                         Candidates
                                     </span>
                                 </div>
-                                <Link
-                                    to={`/shortlist/${job.job_id}`}
-                                    className="px-4 py-2 text-xs font-bold text-indigo-600 bg-white/60 border border-indigo-100 rounded-full hover:bg-indigo-600 hover:text-white transition-colors shadow-sm"
-                                >
-                                    View Shortlist &rarr;
-                                </Link>
+
+                                <div className="flex items-center space-x-3">
+                                    <button
+                                        onClick={() => handleDelete(job.job_id)}
+                                        className="px-3 py-2 text-xs font-bold text-red-500 bg-red-50 border border-red-100 rounded-lg hover:bg-red-500 hover:text-white transition-colors"
+                                    >
+                                        Delete
+                                    </button>
+                                    <Link
+                                        to={`/shortlist/${job.job_id}`}
+                                        className="px-4 py-2 text-xs font-bold text-indigo-600 bg-white/60 border border-indigo-100 rounded-full hover:bg-indigo-600 hover:text-white transition-colors shadow-sm"
+                                    >
+                                        View Shortlist &rarr;
+                                    </Link>
+                                </div>
                             </div>
                         </div>
                     ))}

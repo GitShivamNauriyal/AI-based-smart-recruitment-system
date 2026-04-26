@@ -30,12 +30,12 @@ export default function Register() {
 
     return (
         <div className="flex items-center justify-center min-h-screen">
-            <div className="glass-panel p-10 w-[28rem] relative overflow-hidden shadow-2xl">
+            <div className="glass-panel p-10 w-md relative overflow-hidden shadow-2xl">
                 {/* Decorative floating blur */}
-                <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-cyan-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
+                <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-indigo-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
 
                 <h2 className="mb-8 text-4xl font-black text-center text-slate-800 tracking-tight">
-                    Create <span className="text-cyan-600">Identity</span>
+                    Create <span className="text-indigo-600">Identity</span>
                 </h2>
 
                 {error && (
@@ -52,7 +52,7 @@ export default function Register() {
                         type="text"
                         required
                         placeholder="Full Name"
-                        className="w-full px-5 py-3 bg-white/50 border border-white/40 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:bg-white transition-all text-slate-700 font-medium"
+                        className="w-full px-5 py-3 bg-white/50 border border-white/40 rounded-xl focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:bg-white transition-all text-slate-700 font-medium"
                         value={formData.name}
                         onChange={(e) =>
                             setFormData({ ...formData, name: e.target.value })
@@ -63,7 +63,7 @@ export default function Register() {
                         type="email"
                         required
                         placeholder="Email Address"
-                        className="w-full px-5 py-3 bg-white/50 border border-white/40 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:bg-white transition-all text-slate-700 font-medium"
+                        className="w-full px-5 py-3 bg-white/50 border border-white/40 rounded-xl focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:bg-white transition-all text-slate-700 font-medium"
                         value={formData.email}
                         onChange={(e) =>
                             setFormData({ ...formData, email: e.target.value })
@@ -74,7 +74,7 @@ export default function Register() {
                         type="password"
                         required
                         placeholder="Security Key (Min 6 chars)"
-                        className="w-full px-5 py-3 bg-white/50 border border-white/40 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:bg-white transition-all text-slate-700 font-medium"
+                        className="w-full px-5 py-3 bg-white/50 border border-white/40 rounded-xl focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:bg-white transition-all text-slate-700 font-medium"
                         value={formData.password}
                         onChange={(e) =>
                             setFormData({
@@ -85,7 +85,7 @@ export default function Register() {
                     />
 
                     <select
-                        className="w-full px-5 py-3 bg-white/50 border border-white/40 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:bg-white transition-all text-slate-700 font-medium appearance-none"
+                        className="w-full px-5 py-3 bg-white/50 border border-white/40 rounded-xl focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:bg-white transition-all text-slate-700 font-medium appearance-none"
                         value={formData.role}
                         onChange={(e) =>
                             setFormData({ ...formData, role: e.target.value })
@@ -101,7 +101,7 @@ export default function Register() {
 
                     <button
                         type="submit"
-                        className="w-full mt-2 px-5 py-3 font-bold text-white bg-cyan-600 rounded-xl shadow-xl shadow-cyan-200 hover:bg-cyan-700 hover:-translate-y-0.5 transition-all"
+                        className="w-full mt-2 px-5 py-3 font-bold text-white bg-indigo-600 rounded-xl shadow-xl shadow-indigo-200 hover:bg-indigo-700 hover:-translate-y-0.5 transition-all"
                     >
                         Register Entity
                     </button>
@@ -109,7 +109,10 @@ export default function Register() {
 
                 <p className="mt-6 text-sm text-center text-slate-500 font-medium relative z-10">
                     Already in the system?{" "}
-                    <Link to="/" className="text-cyan-600 hover:text-cyan-800">
+                    <Link
+                        to="/"
+                        className="text-indigo-500 hover:text-indigo-800"
+                    >
                         Initialize Login
                     </Link>
                 </p>

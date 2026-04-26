@@ -6,6 +6,29 @@ export default function ShortlistView() {
     const { jobId } = useParams()
     const [applicants, setApplicants] = useState([])
 
+    const handleDownload = async (appId, candidateName) => {
+        try {
+            const response = await api.get(`/applications/${appId}/resume`, {
+                responseType: "blob", // CRITICAL: Tells Axios we are downloading a file, not JSON
+            })
+
+            // Create a temporary link to force the browser download
+            const url = window.URL.createObjectURL(new Blob([response.data]))
+            const link = document.createElement("a")
+            link.href = url
+            link.setAttribute(
+                "download",
+                `${candidateName.replace(/\s+/g, "_")}_Resume.pdf`,
+            )
+            document.body.appendChild(link)
+            link.click()
+            link.remove()
+        } catch (error) {
+            console.error("Download failed", error)
+            alert("Failed to securely download the dossier.")
+        }
+    }
+
     useEffect(() => {
         const fetchShortlist = async () => {
             try {
@@ -38,7 +61,7 @@ export default function ShortlistView() {
                         className="glass-panel p-8 flex items-center justify-between relative overflow-hidden"
                     >
                         {/* 2027 Rank Badge */}
-                        <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-indigo-500 to-cyan-400"></div>
+                        <div className="absolute top-0 left-0 w-2 h-full bg-linear-to-b from-indigo-500 to-cyan-400"></div>
 
                         <div className="flex-1 pl-6">
                             <h2 className="text-2xl font-bold text-slate-800 flex items-center gap-3">
@@ -69,14 +92,17 @@ export default function ShortlistView() {
                                 Match Index
                             </span>
 
-                            <a
-                                href={candidate.resumeUrl}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="mt-6 px-6 py-2 text-sm font-bold text-indigo-600 bg-white rounded-full shadow-md hover:shadow-lg hover:text-indigo-800 transition-all border border-indigo-50"
+                            <button
+                                onClick={() =>
+                                    handleDownload(
+                                        candidate.appID,
+                                        candidate.name,
+                                    )
+                                }
+                                className="mt-6 px-6 py-2 text-sm font-bold text-indigo-600 bg-white rounded-full shadow-md hover:shadow-lg hover:text-indigo-800 transition-all border border-indigo-50 cursor-pointer"
                             >
-                                Inspect Dossier
-                            </a>
+                                Download PDF Dossier
+                            </button>
                         </div>
                     </div>
                 ))}

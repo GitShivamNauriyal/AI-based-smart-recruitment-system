@@ -19,7 +19,7 @@ export default function Navbar() {
     return (
         <div className="pt-6 pb-2">
             <nav className="max-w-5xl mx-auto glass-panel px-8 py-4 flex items-center justify-between">
-                <div className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-cyan-500 tracking-tighter">
+                <div className="text-2xl font-black text-transparent bg-clip-text bg-linear-to-r from-indigo-600 to-cyan-500 tracking-tighter">
                     SmartRecruit
                     <span className="font-light text-indigo-900">AI</span>
                 </div>
